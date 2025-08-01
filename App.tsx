@@ -4,7 +4,14 @@
  *
  * @format
  */
+<<<<<<< HEAD
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
+=======
+
+import { StatusBar, StyleSheet, Text, useColorScheme, View } from 'react-native';
+import HomeScreen from './src/screens/Home/HomeScreen';
+import FirebaseCheck from './src/auth/firebaseCheck';
+>>>>>>> 99363ac (Initial Commit before Navigation Screens)
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -12,7 +19,8 @@ function App() {
   return (
     <View style={styles.container}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <NewAppScreen templateFileName="App.tsx" />
+      <HomeScreen/>
+      <FirebaseCheck/>
     </View>
   );
 }
@@ -20,6 +28,8 @@ function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems : 'center',
+    justifyContent : 'center'
   },
 });
 
