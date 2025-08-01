@@ -1,17 +1,18 @@
 
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
 import HomeScreen from './src/screens/Home/HomeScreen';
-import FirebaseCheck from './src/auth/firebaseCheck';
+import FirebaseCheck from './src/auth/FirebaseCheck';
+import AuthNavigation from './src/navigation/AuthNavigation';
+import { NavigationContainer } from '@react-navigation/native';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <View style={styles.container}>
+    <NavigationContainer>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <HomeScreen/>
-      <FirebaseCheck/>
-    </View>
+      <AuthNavigation/>
+    </NavigationContainer>
   );
 }
 
