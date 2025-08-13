@@ -17,6 +17,7 @@ const HomeScreen = () => {
 
         {/* Search Bar */}
         <View style={styles.searchBar}>
+          
           <TextInput
             placeholder="Search for restaurants, dishes..."
             placeholderTextColor="#777"
