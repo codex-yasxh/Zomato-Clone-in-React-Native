@@ -1,6 +1,11 @@
 import { SafeAreaView, StyleSheet, Text, View, TextInput, Image, ScrollView } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
+import categories from '../../components/Categories';
+import Categories from '../../components/Categories';
+import ItemComponents from '../../components/ItemComponents';
+
+
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -17,16 +22,17 @@ const HomeScreen = () => {
 
         {/* Search Bar */}
         <View style={styles.searchBar}>
-          
+          <Image source={require('../../assets/logo/searchLogo.png')} style={styles.searchIcon}/>
           <TextInput
             placeholder="Search for restaurants, dishes..."
             placeholderTextColor="#777"
             style={styles.searchInput}
           />
         </View>
-        <View style={styles.titleContainer}>
-        <Text style={styles.title}> Hello , Yash ! </Text>
-        </View>
+      <View style={styles.CategoryList}>
+        <Categories/>
+      </View>
+      
         {/* Promo Banner */}
         <Image
           source={{ uri: 'https://images.unsplash.com/photo-1600891964599-f61ba0e24092' }}
@@ -34,14 +40,8 @@ const HomeScreen = () => {
         />
 
         {/* Categories */}
-        <View style={styles.categoryContainer}>
-          <Text style={styles.categoryTitle}>What's on your mind?</Text>
-          <View style={styles.categoryRow}>
-            <View style={styles.categoryBox}><Text>🍕 Pizza</Text></View>
-            <View style={styles.categoryBox}><Text>🍔 Burger</Text></View>
-            <View style={styles.categoryBox}><Text>🍜 Noodles</Text></View>
-            <View style={styles.categoryBox}><Text>🍩 Dessert</Text></View>
-          </View>
+        <View>
+          <ItemComponents/>
         </View>
 
       </ScrollView>
@@ -82,16 +82,24 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   searchBar: {
-    marginTop: 16,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 12,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-  },
-  searchInput: {
-    fontSize: 16,
-    color: '#000',
-  },
+  marginTop: 16,
+  backgroundColor: '#f0f0f0',
+  borderRadius: 12,
+  paddingHorizontal: 12,
+  paddingVertical: 8,
+  flexDirection: 'row',       // ✅ icon & text side-by-side
+  alignItems: 'center',       // ✅ vertically center
+},
+searchIcon: {
+  width: 20,
+  height: 20,
+  marginRight: 8,              // ✅ space between icon & input
+},
+searchInput: {
+  flex: 1,                     // ✅ takes remaining width
+  fontSize: 16,
+  color: '#000',
+},
   banner: {
     height: 160,
     width: '100%',
@@ -112,11 +120,14 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   categoryBox: {
-    backgroundColor: '#f7f7f7',
-    padding: 12,
+    backgroundColor: '#ebeaeaff',
+    padding: 14,
     borderRadius: 8,
     marginBottom: 12,
     width: '47%',
     alignItems: 'center',
   },
+  CategoryList : {
+    marginTop : 10
+  }
 });

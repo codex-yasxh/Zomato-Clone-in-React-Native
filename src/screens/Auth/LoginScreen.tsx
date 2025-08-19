@@ -85,6 +85,10 @@ const LoginScreen = () => {
         <Pressable onPress={() => navigation.navigate('Splash')}>
           <Text style={[styles.SplashButtonText, { color: '#E23744' }]}>Back to SplashScreen</Text>
         </Pressable>
+
+        <Pressable onPress={() => navigation.navigate('Home')}>
+          <Text style={[styles.SplashButtonText, { color: '#E23744' }]}>Back to Home Screen</Text>
+        </Pressable>
       </View>
     </SafeAreaView>
   );
