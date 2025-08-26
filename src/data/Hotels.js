@@ -30,7 +30,7 @@ const hotels = [
   },
   {
     id: "3",
-    featured_image: "https://images.unsplash.com/photo-1569096651661-820d0de8b4ab?q=80&w=663&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    featured_image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     name: "Domino's Pizza",
     cuisines: "Pizza, Fast Food",
     aggregate_rating: 4.0,
@@ -44,7 +44,7 @@ const hotels = [
   },
   {
     id: "4",
-    featured_image: "https://images.unsplash.com/photo-1569096651661-820d0de8b4ab?q=80&w=663&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    featured_image: "https://images.unsplash.com/photo-1730965804405-1f6a2b5d1068?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     name: "Haldiram’s",
     cuisines: "Indian, Street Food",
     aggregate_rating: 4.3,
@@ -58,8 +58,7 @@ const hotels = [
   },
   {
     id: "5",
-    featured_image: "https://images.unsplash.com/photo-1569096651661-820d0de8b4ab?q=80&w=663&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    name: "KFC",
+    featured_image: "https://images.unsplash.com/photo-1720777636417-bc75f5203e38?q=80&w=693&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     cuisines: "Chicken, Fast Food",
     aggregate_rating: 4.1,
     address: "Forum Mall, Koramangala, Bangalore",
