@@ -75,80 +75,58 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#fafafa',  // softer bg than pure white
   },
-  titleContainer:{
-    alignItems : 'center'
-  },
-  title: {
-  fontSize: 28,
-  fontWeight: '700',
-  color: '#333',
-  marginTop: 16,
-  marginBottom: 8,
-},
   scrollContainer: {
     paddingHorizontal: 16,
   },
   appBar: {
     marginTop: 40,
+    marginBottom: 12,
   },
   locationText: {
     fontSize: 14,
-    color: '#888',
+    color: '#999',
   },
   cityText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#000',
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#222',
   },
   searchBar: {
-  marginTop: 16,
-  backgroundColor: '#f0f0f0',
-  borderRadius: 12,
-  paddingHorizontal: 12,
-  paddingVertical: 8,
-  flexDirection: 'row',       // ✅ icon & text side-by-side
-  alignItems: 'center',       // ✅ vertically center
-},
-searchIcon: {
-  width: 20,
-  height: 20,
-  marginRight: 8,              // ✅ space between icon & input
-},
-searchInput: {
-  flex: 1,                     // ✅ takes remaining width
-  fontSize: 16,
-  color: '#000',
-},
-  banner: {
-    height: 160,
-    width: '100%',
-    borderRadius: 12,
-    marginTop: 20,
-  },
-  categoryContainer: {
-    marginTop: 24,
-  },
-  categoryTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 12,
-  },
-  categoryRow: {
+    marginTop: 16,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 50,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-  },
-  categoryBox: {
-    backgroundColor: '#ebeaeaff',
-    padding: 14,
-    borderRadius: 8,
-    marginBottom: 12,
-    width: '47%',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    shadowOffset: { width: 0, height: 1 },
   },
-  CategoryList : {
-    marginTop : 10
+  searchIcon: {
+    width: 22,
+    height: 22,
+    marginRight: 10,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: '#333',
+  },
+  banner: {
+    height: 180,
+    width: '100%',
+    borderRadius: 16,
+    marginTop: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 3 },
+  },
+  CategoryList: {
+    marginTop: 16,
   }
 });
