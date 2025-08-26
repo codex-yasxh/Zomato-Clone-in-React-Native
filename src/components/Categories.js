@@ -40,7 +40,7 @@ const Categories = () => {
       showsHorizontalScrollIndicator={false}
       renderItem={({item})=>(
         <Pressable style={styles.CategoryBtn}>
-            <Text>{item.name}</Text>
+            <Text style={styles.CategoryText}>{item.name}</Text>
         </Pressable>
       )}
       />
@@ -51,12 +51,22 @@ const Categories = () => {
 export default Categories
 
 const styles = StyleSheet.create({
-    CategoryBtn : {
-        padding : 4,
-        borderRadius : 4,
-        borderColor : '#000000',
-        marginHorizontal : 4,
-        backgroundColor : '#dfd4d4ff'
-    },
-
-})
+  CategoryBtn: {
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    marginHorizontal: 6,
+    backgroundColor: '#d0e1e0ff',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    shadowOffset: { width: 0, height: 1 },
+  },
+  CategoryText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#333',
+  }
+});

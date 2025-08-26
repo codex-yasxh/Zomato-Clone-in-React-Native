@@ -28,41 +28,36 @@ const HotelComponents = ({ restaurant }) => {
 };
 
 export default HotelComponents;
+
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
-    borderRadius: 12,
-    marginVertical: 12,
-    alignItems: "center",   // center content horizontally
-    padding: 12,            // spacing inside card
-    elevation: 3,           // Android shadow
-    shadowColor: "#000",    // iOS shadow
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
-  },
-  image: {
-    width: "100%",          // take full width of card
-    height: 200,            // fixed height
-    resizeMode: "contain",  // show full image, no crop
-    marginBottom: 10,
+    borderRadius: 16,
+    marginVertical: 14,
+    overflow: 'hidden',
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 3 },
   },
   info: {
-    width: "100%",          // text takes full width
-    alignItems: "center",   // center text
+    padding: 14,
   },
   name: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: "700",
     marginBottom: 4,
+    color: '#222',
   },
   cuisines: {
-    color: "#666",
+    color: "#777",
     marginBottom: 6,
-    textAlign: "center",
+    fontSize: 14,
   },
   rating: {
     fontWeight: "600",
     color: "green",
+    fontSize: 15,
   },
 });
