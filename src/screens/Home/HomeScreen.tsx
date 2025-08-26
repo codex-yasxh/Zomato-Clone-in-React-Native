@@ -4,10 +4,13 @@ import { useNavigation } from '@react-navigation/native';
 import categories from '../../components/Categories';
 import Categories from '../../components/Categories';
 import ItemComponents from '../../components/ItemComponents';
+import hotels from '../../data/Hotels';
+import HotelComponents from '../../components/HotelComponents';
 
 
 
 const HomeScreen = () => {
+  const data = hotels;  //Hotel data 
   const navigation = useNavigation();
 
   return (
@@ -44,7 +47,25 @@ const HomeScreen = () => {
           <ItemComponents/>
         </View>
 
+{/* The map function in JavaScript is used to 
+iterate over an array and transform each element into a new value,
+ returning a new array with the transformed elements.
+ It is a key part of functional programming and
+  is commonly used in React to dynamically render lists of components. */}
+
+  {/* data is the array of objects here and will render the components props and 
+  map will iterate over the data and
+   item will render the particular item where map is positioned */}
+      {
+        data.map(
+          (item)=>
+            <HotelComponents restaurant = {item}/>
+        )
+      }
+
       </ScrollView>
+
+    
     </SafeAreaView>
   );
 };
