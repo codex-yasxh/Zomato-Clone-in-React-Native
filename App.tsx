@@ -5,7 +5,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./src/api/FirebaseConfig";
 import AuthNavigation from "./src/navigation/AuthNavigation";
 import AppNavigation from "./src/navigation/AppNavigation";
-import SplashScreen from "./src/screens/Auth/SplashScreen";
+import SplashScreen from "./src/screens/SplashScreen/SplashScreen"; // <-- keep this pure loading splash
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -20,7 +20,8 @@ export default function App() {
     return unsubscribe;
   }, []);
 
-  if (loading) return <SplashScreen/>; // or splash screen
+  // Always show splash when checking login state
+  if (loading) return <SplashScreen />;
 
   return (
     <NavigationContainer>

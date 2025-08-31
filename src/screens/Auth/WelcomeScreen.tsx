@@ -3,7 +3,7 @@ import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { SCREENS } from '../../routes';
 
-const SplashScreen = () => {
+const WelcomeScreen = () => {
     const navigation = useNavigation();
   return (
   <SafeAreaView style={styles.container}>
@@ -29,7 +29,7 @@ const SplashScreen = () => {
   );
 };
 
-export default SplashScreen
+export default WelcomeScreen
 
 const styles = StyleSheet.create({
   container : {

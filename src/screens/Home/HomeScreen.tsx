@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
 
   /** Top App Bar */
   appBar: {
-    marginTop: 40,
-    marginBottom: 12,
+    marginTop: 10,
+    marginBottom: 8,
   },
   locationText: {
     fontSize: 14,
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
     borderRadius: 50,
     paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingVertical: 6,
     flexDirection: "row",
     alignItems: "center",
     shadowColor: "#000",
