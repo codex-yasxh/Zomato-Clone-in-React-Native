@@ -1,22 +1,31 @@
-import { SafeAreaView, StyleSheet, Text, View, TextInput, Image, ScrollView } from 'react-native';
-import React from 'react';
-import { useNavigation } from '@react-navigation/native';
-import categories from '../../components/Categories';
-import Categories from '../../components/Categories';
-import ItemComponents from '../../components/ItemComponents';
-import hotels from '../../data/Hotels';
-import HotelComponents from '../../components/HotelComponents';
-
-
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Image,
+  ScrollView,
+  Pressable,
+} from "react-native";
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import Categories from "../../components/Categories";
+import ItemComponents from "../../components/ItemComponents";
+import hotels from "../../data/Hotels";
+import HotelComponents from "../../components/HotelComponents";
+import SlidingBanner from "../../components/SlidingBanner";
 
 const HomeScreen = () => {
-  const data = hotels;  //Hotel data 
+  const data = hotels;
   const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-        
+      <ScrollView
+        style={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+      >
         {/* App Bar */}
         <View style={styles.appBar}>
           <Text style={styles.locationText}>Delivery to</Text>
@@ -25,47 +34,46 @@ const HomeScreen = () => {
 
         {/* Search Bar */}
         <View style={styles.searchBar}>
-          <Image source={require('../../assets/logo/searchLogo.png')} style={styles.searchIcon}/>
+          <Image
+            source={require("../../assets/logo/searchLogo.png")}
+            style={styles.searchIcon}
+          />
           <TextInput
             placeholder="Search for restaurants, dishes..."
             placeholderTextColor="#777"
             style={styles.searchInput}
           />
         </View>
-      <View style={styles.CategoryList}>
-        <Categories/>
-      </View>
-      
-        {/* Promo Banner */}
-        <Image
-          source={{ uri: 'https://images.unsplash.com/photo-1600891964599-f61ba0e24092' }}
-          style={styles.banner}
-        />
 
         {/* Categories */}
-        <View>
-          <ItemComponents/>
+        <View style={styles.CategoryList}>
+          <Categories />
         </View>
 
-{/* The map function in JavaScript is used to 
-iterate over an array and transform each element into a new value,
- returning a new array with the transformed elements.
- It is a key part of functional programming and
-  is commonly used in React to dynamically render lists of components. */}
+        {/* Promo Sliding Banner */}
+        <View style={styles.bannerWrapper}>
+          <SlidingBanner />
+        </View>
 
-  {/* data is the array of objects here and will render the components props and 
-  map will iterate over the data and
-   item will render the particular item where map is positioned */}
-      {
-        data.map(
-          (item)=>
-            <HotelComponents restaurant = {item}/>
+        {/* Item Components (Food Types / Offers) */}
+        <View style={styles.itemsSection}>
+          <ItemComponents />
+        </View>
+
+        {/* Hotels / Restaurants List */}
+        <View style={styles.hotelSection}>
+          
+          {
+          data.map((item) => (
+            
+            <HotelComponents key={item.id} restaurant={item} />
+          
+          )
         )
-      }
-
+          }
+        
+        </View>
       </ScrollView>
-
-    
     </SafeAreaView>
   );
 };
@@ -75,36 +83,41 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fafafa',  // softer bg than pure white
+    backgroundColor: "#fafafa", // softer than pure white
   },
   scrollContainer: {
     paddingHorizontal: 16,
   },
+
+  /** Top App Bar */
   appBar: {
     marginTop: 40,
     marginBottom: 12,
   },
   locationText: {
     fontSize: 14,
-    color: '#999',
+    color: "#999",
   },
   cityText: {
     fontSize: 20,
-    fontWeight: '700',
-    color: '#222',
+    fontWeight: "700",
+    color: "#222",
   },
+
+  /** Search Bar */
   searchBar: {
-    marginTop: 16,
-    backgroundColor: '#f5f5f5',
+    marginTop: 12,
+    backgroundColor: "#f5f5f5",
     borderRadius: 50,
     paddingHorizontal: 16,
     paddingVertical: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
+    flexDirection: "row",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.07,
     shadowRadius: 3,
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2, // Android shadow
   },
   searchIcon: {
     width: 22,
@@ -114,19 +127,30 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 16,
-    color: '#333',
+    color: "#333",
   },
-  banner: {
-    height: 180,
-    width: '100%',
-    borderRadius: 16,
-    marginTop: 20,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 3 },
-  },
+
+  /** Categories */
   CategoryList: {
-    marginTop: 16,
-  }
+    marginTop: 20,
+    marginBottom: 10,
+  },
+
+  /** Sliding Banner */
+  bannerWrapper: {
+    marginTop: 10,
+    borderRadius: 16,
+    overflow: "hidden", // ensures banners have rounded corners
+  },
+
+  /** Item Components (Food filters/offers row) */
+  itemsSection: {
+    marginTop: 20,
+  },
+
+  /** Hotel / Restaurants Section */
+  hotelSection: {
+    marginTop: 24,
+    paddingBottom: 40, // breathing space at bottom
+  },
 });

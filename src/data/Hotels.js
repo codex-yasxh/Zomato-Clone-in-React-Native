@@ -18,7 +18,8 @@ const hotels = [
   {
     id: "2",
     featured_image: "https://plus.unsplash.com/premium_photo-1673545518947-ddf3240090b1?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    cuisines: "Biryani, Mughlai",
+    name : "Indian Coffee House ",
+    cuisines: "The India's Biggest Coffee Hub",
     aggregate_rating: 4.2,
     address: "Sector 29, Near Huda Metro Station, Gurgaon",
     smalladdress: "Sector 29, Gurgaon",
@@ -59,6 +60,7 @@ const hotels = [
   {
     id: "5",
     featured_image: "https://images.unsplash.com/photo-1720777636417-bc75f5203e38?q=80&w=693&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    name:"Kakke di hatti",
     cuisines: "Chicken, Fast Food",
     aggregate_rating: 4.1,
     address: "Forum Mall, Koramangala, Bangalore",

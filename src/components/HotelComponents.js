@@ -1,11 +1,19 @@
-import { Image, StyleSheet, Text, View, Dimensions } from 'react-native';
+import { Image, StyleSheet, Text, View, Dimensions, Pressable } from 'react-native';
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { SCREENS } from '../routes';
+
 
 const HotelComponents = ({ restaurant }) => {
   const screenWidth = Dimensions.get("window").width;
+  const navigation = useNavigation();
 
   return (
     <View style={styles.card}>
+      <Pressable
+      activeOpacity={0.8}
+      onPress={()=>navigation.navigate(SCREENS.Cart, {restaurant})}
+      >
       <Image
         style={{
           width: "100%",
@@ -23,6 +31,7 @@ const HotelComponents = ({ restaurant }) => {
         <Text style={styles.cuisines}>{restaurant.cuisines}</Text>
         <Text style={styles.rating}>⭐ {restaurant.aggregate_rating}</Text>
       </View>
+    </Pressable>
     </View>
   );
 };
