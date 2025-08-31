@@ -1,4 +1,4 @@
-// hotels.js
+// Hotels.js
 
 const hotels = [
   {

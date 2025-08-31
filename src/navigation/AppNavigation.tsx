@@ -12,7 +12,7 @@ const AppNavigation = () => {
     <AppStack.Navigator screenOptions={{ headerShown: false }}>
         <AppStack.Screen name={SCREENS.Home} component={HomeScreen}/>
         <AppStack.Screen name={SCREENS.Cart} component={AddToCartScreen}/>
-        <AppStack.Screen name={SCREENS.Hotels} component={HotelScreen}/>
+        <AppStack.Screen name={SCREENS.HotelScreen} component={HotelScreen}/>
     </AppStack.Navigator>
   )
 }

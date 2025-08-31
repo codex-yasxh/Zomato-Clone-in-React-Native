@@ -11,9 +11,11 @@ const HotelComponents = ({ restaurant }) => {
   return (
     <View style={styles.card}>
       <Pressable
-      activeOpacity={0.8}
-      onPress={()=>navigation.navigate(SCREENS.Hotels, {restaurant})}
-      >
+        onPress={() =>
+        navigation.navigate(SCREENS.HotelScreen, { hotel: restaurant }) // 👈 send data
+  }
+>
+
       <Image
         style={{
           width: "100%",

@@ -65,9 +65,7 @@ const HomeScreen = () => {
           
           {
           data.map((item) => (
-            
             <HotelComponents key={item.id} restaurant={item} />
-          
           )
         )
           }
