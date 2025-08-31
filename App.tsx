@@ -1,27 +1,31 @@
+import React, { useEffect, useState } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { StatusBar } from "react-native";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./src/api/FirebaseConfig";
+import AuthNavigation from "./src/navigation/AuthNavigation";
+import AppNavigation from "./src/navigation/AppNavigation";
+import SplashScreen from "./src/screens/Auth/SplashScreen";
 
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import HomeScreen from './src/screens/Home/HomeScreen';
-import FirebaseCheck from './src/auth/FirebaseCheck';
-import AuthNavigation from './src/navigation/AuthNavigation';
-import { NavigationContainer } from '@react-navigation/native';
+export default function App() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+      setLoading(false);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  if (loading) return <SplashScreen/>; // or splash screen
 
   return (
     <NavigationContainer>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AuthNavigation/>
+      <StatusBar barStyle="dark-content" />
+      {user ? <AppNavigation /> : <AuthNavigation />}
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems : 'center',
-    justifyContent : 'center'
-  },
-});
-
-export default App;
