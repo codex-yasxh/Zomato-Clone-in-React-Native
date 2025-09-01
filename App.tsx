@@ -6,6 +6,7 @@ import { auth } from "./src/api/FirebaseConfig";
 import AuthNavigation from "./src/navigation/AuthNavigation";
 import AppNavigation from "./src/navigation/AppNavigation";
 import SplashScreen from "./src/screens/SplashScreen/SplashScreen"; // <-- keep this pure loading splash
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -24,9 +25,11 @@ export default function App() {
   if (loading) return <SplashScreen />;
 
   return (
+    <GestureHandlerRootView style={{flex : 1}}>
     <NavigationContainer>
       <StatusBar barStyle="dark-content" />
       {user ? <AppNavigation /> : <AuthNavigation />}
     </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
