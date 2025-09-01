@@ -148,7 +148,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderTopWidth: 1,
-    borderTopColor: "#eee",
+    borderTopColor: "#eae7e7ff",
+    backgroundColor : "#f8f8f8",
+    marginHorizontal : 8,
+    marginTop : 10,
+    borderRadius : 8
   },
   delivery: {
     fontSize: 15,
