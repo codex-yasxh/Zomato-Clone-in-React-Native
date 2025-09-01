@@ -53,9 +53,9 @@ const HotelScreen = () => {
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {/* Hero Image */}
         <Image
-          source={{ uri: hotel.featured_image }}
-          style={styles.heroImage}
-        />
+  source={{ uri: hotel.featured_image }}
+  style={styles.heroImage}
+/>
 
         {/* Info Section */}
         <View style={styles.infoContainer}>
@@ -96,52 +96,51 @@ const HotelScreen = () => {
           <Text style={styles.fee}>₹30 additional distance fee (if far)</Text>
         </View>
 
-        <View style={styles.menu}>
-          <FlatList
-            data={hotel.menu}
-            keyExtractor={menuItem => menuItem.id}
-            renderItem={({ item: menuItem }) => (
-              <View style={styles.card}>
-                {/* LEFT SIDE INFO */}
-                <View style={styles.cardInfo}>
-                  <Text style={styles.menuTitle}>{menuItem.name}</Text>
-                  <Text style={styles.menuDescription}>
-                    {menuItem.description || 'Delicious and freshly prepared'}
-                  </Text>
-                  <Text style={styles.menuPrice}>₹{menuItem.price}</Text>
-                  <Text style={styles.menuRating}>{menuItem.rating}⭐</Text>
-                </View>
-
-                {/* RIGHT SIDE IMAGE + BUTTON */}
-                <View style={styles.cardRight}>
-                  <Image
-                    source={{ uri: menuItem.image }}
-                    style={styles.menuImage}
-                  />
-                  <View style={styles.qtyContainer}>
-                    <TouchableOpacity
-                      style={styles.qtyButton}
-                      onPress={() => decreaseQty(menuItem.id)}
-                    >
-                      <Text style={styles.qtyText}>-</Text>
-                    </TouchableOpacity>
-
-                    <Text style={styles.qtyValue}>
-                      {quantities[menuItem.id] || 0}
-                    </Text>
-
-                    <TouchableOpacity
-                      style={styles.qtyButton}
-                      onPress={() => increaseQty(menuItem.id)}
-                    >
-                      <Text style={styles.qtyText}>+</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            )}
-          />
+       <View style={styles.menu}>
+  <FlatList
+    data={hotel.menu}
+    keyExtractor={(menuItem) => menuItem.id}
+    renderItem={({ item: menuItem }) => (
+      <View style={styles.card}>
+        {/* LEFT SIDE INFO */}
+        <View style={styles.cardInfo}>
+          <Text style={styles.menuTitle}>{menuItem.name}</Text>
+          <Text style={styles.menuDescription}>
+            {menuItem.description || "Delicious and freshly prepared"}
+          </Text>
+          <Text style={styles.menuPrice}>₹{menuItem.price}</Text>
+          <Text style={styles.menuRating}>{menuItem.rating}⭐</Text>
         </View>
+
+        {/* RIGHT SIDE IMAGE + COUNTER OVERLAY */}
+        <View style={styles.cardRight}>
+          <Image
+            source={{ uri: menuItem.image }}
+            style={styles.menuImage}
+          />
+          {/* Overlay Counter */}
+          <View style={styles.qtyOverlay}>
+            <TouchableOpacity
+              onPress={() => decreaseQty(menuItem.id)}
+            >
+              <Text style={styles.qtyText}>-</Text>
+            </TouchableOpacity>
+
+            <Text style={styles.qtyValue}>
+              {quantities[menuItem.id] || 0}
+            </Text>
+
+            <TouchableOpacity
+              onPress={() => increaseQty(menuItem.id)}
+            >
+              <Text style={styles.qtyText}>+</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    )}
+  />
+</View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -159,11 +158,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   heroImage: {
-    width: '100%',
-    height: (Dimensions.get('window').width * 9) / 16,
-    borderBottomLeftRadius: 16,
-    borderBottomRightRadius: 16,
-  },
+  width: "90%",   // smaller than full width
+  height: 200,    // smaller height
+  borderRadius: 16,
+  alignSelf: "center",  // center in screen
+  marginVertical: 12,
+},
   infoContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -289,22 +289,22 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   cardRight: {
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
+  position: "relative", // so overlay works
+  alignItems: "center",
+  justifyContent: "center",
+},
   menuImage: {
-    width: 90,
-    height: 90,
-    borderRadius: 10,
-    marginBottom: 8,
-  },
+  width: 100,
+  height: 100,
+  borderRadius: 12,
+},
   addButton: {
     backgroundColor: '#0aada8',
     color: '#fff',
     fontSize: 14,
     fontWeight: '600',
     paddingVertical: 6,
-    paddingHorizontal: 18,
+    paddingHorizontal: 12,
     borderRadius: 20,
     overflow: 'hidden',
   },
@@ -318,21 +318,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#ff4d6d',
     borderRadius: 10,
-    paddingHorizontal: 6,
+    paddingHorizontal: 4,
     paddingVertical: 2,
   },
   qtyButton: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 14,
   },
   qtyText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '700',
-  },
+  color: "#fff",
+  fontSize: 18,
+  fontWeight: "700",
+  paddingHorizontal: 6,
+},
   qtyValue: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-    marginHorizontal: 6,
-  },
+  color: "#fff",
+  fontSize: 16,
+  fontWeight: "600",
+  marginHorizontal: 4,
+},
+  qtyOverlay: {
+  position: "absolute",
+  bottom: 0,                     // snap to bottom edge of image
+  left: 0,
+  right: 0,                      // stretch across image width
+  justifyContent: 'space-evenly',
+  alignItems: "center",
+  flexDirection: "row",
+  backgroundColor: "rgba(0,0,0,0.5)",
+  paddingVertical: 2,
+  borderBottomLeftRadius : 12,
+  borderBottomRightRadius : 12,
+},
 });
