@@ -8,54 +8,59 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { FlatList } from 'react-native-gesture-handler';
-import hotels from '../../data/Hotels';
+import { useCart } from '../../context/CartContext';
+import { Snackbar } from 'react-native-paper';
 
 const HotelScreen = () => {
   const route = useRoute();
   const { hotel } = route.params;
   const screenWidth = Dimensions.get('window').width;
-  const [quantities, setQuantities] = useState({});
 
-  //Increasing values of items in cart 
+  // ✅ Use context only
+  const { cartItems, addToCart, removeOneFromCart } = useCart();
 
-  const increaseQty = (id) =>{
-    console.log("added item in the cart");
-    setQuantities((previous)=>{
-      let  current = previous[id] || 0;
-      let updated = current + 1;
-      return {...previous, [id]: updated} //if writing return then don't use () else use () no return sttmnt needed 
+  // ✅ Derive quantities from cart
+  const countMap = useMemo(() => {
+    const map = {};
+    for (const item of cartItems) {
+      map[item.id] = (map[item.id] || 0) + 1;
     }
-    );
-  }
+    return map;
+  }, [cartItems]);
 
-  const decreaseQty = (id) =>{
-    console.log("removed item from the cart");
-    setQuantities((previous)=>{
-      let current = previous[id] || 0 ;
-      if(current > 0){
-        let updated = current - 1 ;
-        return { ...previous , [id] : updated}
-      }
-      return{
-        previous
-      }
-    }
-    )
-  }
+  const getQty = id => countMap[id] || 0;
 
+  // ✅ Snackbar state
+  const [visible, setVisible] = useState(false);
+  const [lastItem, setLastItem] = useState(null);
+  const [lastAction, setLastAction] = useState(null);
 
+  const handleAddToCart = item => {
+    addToCart(item);
+    setLastItem(item);
+    setLastAction('add');
+    setVisible(true);
+  };
+
+  const handleRemoveFromCart = item => {
+    if (getQty(item.id) === 0) return; // nothing to remove
+    removeOneFromCart(item.id);
+    setLastItem(item);
+    setLastAction('remove');
+    setVisible(true);
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {/* Hero Image */}
         <Image
-  source={{ uri: hotel.featured_image }}
-  style={styles.heroImage}
-/>
+          source={{ uri: hotel.featured_image }}
+          style={styles.heroImage}
+        />
 
         {/* Info Section */}
         <View style={styles.infoContainer}>
@@ -96,52 +101,78 @@ const HotelScreen = () => {
           <Text style={styles.fee}>₹30 additional distance fee (if far)</Text>
         </View>
 
-       <View style={styles.menu}>
-  <FlatList
-    data={hotel.menu}
-    keyExtractor={(menuItem) => menuItem.id}
-    renderItem={({ item: menuItem }) => (
-      <View style={styles.card}>
-        {/* LEFT SIDE INFO */}
-        <View style={styles.cardInfo}>
-          <Text style={styles.menuTitle}>{menuItem.name}</Text>
-          <Text style={styles.menuDescription}>
-            {menuItem.description || "Delicious and freshly prepared"}
-          </Text>
-          <Text style={styles.menuPrice}>₹{menuItem.price}</Text>
-          <Text style={styles.menuRating}>{menuItem.rating}⭐</Text>
-        </View>
+        {/* Menu List */}
+        <View style={styles.menu}>
+          <FlatList
+            data={hotel.menu}
+            keyExtractor={menuItem => menuItem.id}
+            renderItem={({ item: menuItem }) => (
+              <View style={styles.card}>
+                {/* LEFT SIDE INFO */}
+                <View style={styles.cardInfo}>
+                  <Text style={styles.menuTitle}>{menuItem.name}</Text>
+                  <Text style={styles.menuDescription}>
+                    {menuItem.description || 'Delicious and freshly prepared'}
+                  </Text>
+                  <Text style={styles.menuPrice}>₹{menuItem.price}</Text>
+                  <Text style={styles.menuRating}>{menuItem.rating}⭐</Text>
+                </View>
 
-        {/* RIGHT SIDE IMAGE + COUNTER OVERLAY */}
-        <View style={styles.cardRight}>
-          <Image
-            source={{ uri: menuItem.image }}
-            style={styles.menuImage}
+                {/* RIGHT SIDE IMAGE + COUNTER OVERLAY */}
+                <View style={styles.cardRight}>
+                  <Image
+                    source={{ uri: menuItem.image }}
+                    style={styles.menuImage}
+                  />
+                  {/* Overlay Counter */}
+                  <View style={styles.qtyOverlay}>
+                    <TouchableOpacity
+                      onPress={() => handleRemoveFromCart(menuItem)}
+                    >
+                      <Text style={styles.qtyText}>-</Text>
+                    </TouchableOpacity>
+
+                    <Text style={styles.qtyValue}>
+                      {getQty(menuItem.id)}
+                    </Text>
+
+                    <TouchableOpacity
+                      onPress={() => handleAddToCart(menuItem)}
+                    >
+                      <Text style={styles.qtyText}>+</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            )}
           />
-          {/* Overlay Counter */}
-          <View style={styles.qtyOverlay}>
-            <TouchableOpacity
-              onPress={() => decreaseQty(menuItem.id)}
-            >
-              <Text style={styles.qtyText}>-</Text>
-            </TouchableOpacity>
-
-            <Text style={styles.qtyValue}>
-              {quantities[menuItem.id] || 0}
-            </Text>
-
-            <TouchableOpacity
-              onPress={() => increaseQty(menuItem.id)}
-            >
-              <Text style={styles.qtyText}>+</Text>
-            </TouchableOpacity>
-          </View>
         </View>
-      </View>
-    )}
-  />
-</View>
       </ScrollView>
+
+      {/* ✅ Snackbar */}
+      <Snackbar
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        duration={600}
+        action={{
+          label: 'Undo',
+          onPress: () => {
+            if (!lastItem || !lastAction) return;
+            if (lastAction === 'add') {
+              removeOneFromCart(lastItem.id);
+            } else if (lastAction === 'remove') {
+              addToCart(lastItem);
+            }
+            setLastItem(null);
+            setLastAction(null);
+          },
+        }}
+        style={styles.snackbar}
+      >
+        {lastAction === 'add'
+          ? 'Item added to cart!'
+          : 'Item removed from cart!'}
+      </Snackbar>
     </SafeAreaView>
   );
 };
@@ -158,12 +189,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   heroImage: {
-  width: "90%",   // smaller than full width
-  height: 200,    // smaller height
-  borderRadius: 16,
-  alignSelf: "center",  // center in screen
-  marginVertical: 12,
-},
+    width: '90%',
+    height: 200,
+    borderRadius: 16,
+    alignSelf: 'center',
+    marginVertical: 12,
+  },
   infoContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -289,64 +320,47 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   cardRight: {
-  position: "relative", // so overlay works
-  alignItems: "center",
-  justifyContent: "center",
-},
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   menuImage: {
-  width: 100,
-  height: 100,
-  borderRadius: 12,
-},
-  addButton: {
-    backgroundColor: '#0aada8',
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '600',
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    overflow: 'hidden',
+    width: 100,
+    height: 100,
+    borderRadius: 12,
   },
   menuRating: {
     fontSize: 12,
-    fontWeight: 500,
+    fontWeight: '500',
     color: '#333',
   },
-  qtyContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#ff4d6d',
-    borderRadius: 10,
-    paddingHorizontal: 4,
-    paddingVertical: 2,
-  },
-  qtyButton: {
-    paddingHorizontal: 14,
-  },
   qtyText: {
-  color: "#fff",
-  fontSize: 18,
-  fontWeight: "700",
-  paddingHorizontal: 6,
-},
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '700',
+    paddingHorizontal: 6,
+  },
   qtyValue: {
-  color: "#fff",
-  fontSize: 16,
-  fontWeight: "600",
-  marginHorizontal: 4,
-},
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+    marginHorizontal: 4,
+  },
   qtyOverlay: {
-  position: "absolute",
-  bottom: 0,                     // snap to bottom edge of image
-  left: 0,
-  right: 0,                      // stretch across image width
-  justifyContent: 'space-evenly',
-  alignItems: "center",
-  flexDirection: "row",
-  backgroundColor: "rgba(0,0,0,0.5)",
-  paddingVertical: 2,
-  borderBottomLeftRadius : 12,
-  borderBottomRightRadius : 12,
-},
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    flexDirection: 'row',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    paddingVertical: 2,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+  },
+  snackbar: {
+    backgroundColor: '#245c5aff',
+    borderRadius: 8,
+  },
 });
