@@ -12,7 +12,7 @@ import React, { useState, useMemo } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useCart } from '../../context/CartContext';
-import { Snackbar } from 'react-native-paper';
+import { Snackbar, Button, Modal, Portal } from 'react-native-paper';
 
 const HotelScreen = () => {
   const route = useRoute();
@@ -38,6 +38,9 @@ const HotelScreen = () => {
   const [lastItem, setLastItem] = useState(null);
   const [lastAction, setLastAction] = useState(null);
 
+  // ✅ Bottom sheet state
+  const [sheetVisible, setSheetVisible] = useState(false);
+
   const handleAddToCart = item => {
     addToCart(item);
     setLastItem(item);
@@ -46,12 +49,15 @@ const HotelScreen = () => {
   };
 
   const handleRemoveFromCart = item => {
-    if (getQty(item.id) === 0) return; // nothing to remove
+    if (getQty(item.id) === 0) return;
     removeOneFromCart(item.id);
     setLastItem(item);
     setLastAction('remove');
     setVisible(true);
   };
+
+  // ✅ Total
+  const total = cartItems.reduce((sum, i) => sum + i.price, 0);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -118,13 +124,12 @@ const HotelScreen = () => {
                   <Text style={styles.menuRating}>{menuItem.rating}⭐</Text>
                 </View>
 
-                {/* RIGHT SIDE IMAGE + COUNTER OVERLAY */}
+                {/* RIGHT SIDE IMAGE + COUNTER */}
                 <View style={styles.cardRight}>
                   <Image
                     source={{ uri: menuItem.image }}
                     style={styles.menuImage}
                   />
-                  {/* Overlay Counter */}
                   <View style={styles.qtyOverlay}>
                     <TouchableOpacity
                       onPress={() => handleRemoveFromCart(menuItem)}
@@ -132,13 +137,9 @@ const HotelScreen = () => {
                       <Text style={styles.qtyText}>-</Text>
                     </TouchableOpacity>
 
-                    <Text style={styles.qtyValue}>
-                      {getQty(menuItem.id)}
-                    </Text>
+                    <Text style={styles.qtyValue}>{getQty(menuItem.id)}</Text>
 
-                    <TouchableOpacity
-                      onPress={() => handleAddToCart(menuItem)}
-                    >
+                    <TouchableOpacity onPress={() => handleAddToCart(menuItem)}>
                       <Text style={styles.qtyText}>+</Text>
                     </TouchableOpacity>
                   </View>
@@ -173,6 +174,85 @@ const HotelScreen = () => {
           ? 'Item added to cart!'
           : 'Item removed from cart!'}
       </Snackbar>
+
+      {/* ✅ Floating "View Cart" */}
+      {cartItems.length > 0 && (
+        <View style={styles.cartButtonWrapper}>
+          <TouchableOpacity
+            style={styles.cartButton}
+            onPress={() => {
+              setSheetVisible(true);
+              setTimeout(() => {
+                console.log('cart button');
+              }, 1000);
+            }}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.cartButtonText}>
+              View Cart ({cartItems.length}) • ₹{total}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/* ✅ Bottom Sheet */}
+      <Portal>
+        <Modal
+          visible={sheetVisible}
+          onDismiss={() => setSheetVisible(false)}
+          contentContainerStyle={styles.bottomSheet}
+        >
+          {/* Restaurant Name */}
+          <Text style={styles.sheetHeader}>{hotel.name}</Text>
+
+          {/* Delivery */}
+          <View style={styles.deliveryRow}>
+            <Text style={styles.deliveryIcon}>⏱</Text>
+            <Text style={styles.deliveryText}>Delivery in {hotel.time}</Text>
+          </View>
+
+          {/* Cart Items */}
+          {cartItems.map((item, index) => (
+            <View key={index} style={styles.cartItemRow}>
+              <Text style={styles.cartItemText}>{item.name}</Text>
+              <Text style={styles.cartItemPrice}>₹{item.price}</Text>
+            </View>
+          ))}
+
+          {/* Offers */}
+          <View style={styles.offerBox}>
+            <Text>🏷</Text>
+            <Text style={styles.offerText}>Select a Promo code</Text>
+          </View>
+
+          {/* Climate Conscious */}
+          <View style={styles.climateBox}>
+            <Text style={styles.climateText}>
+              ✅ Don’t send cutlery, tissues and straws. Thank you for caring
+              about the environment.
+            </Text>
+          </View>
+
+          {/* Totals */}
+          <View style={styles.totalRow}>
+            <Text style={styles.totalText}>Item Total</Text>
+            <Text style={styles.totalText}>₹{total}</Text>
+          </View>
+          <View style={styles.totalRow}>
+            <Text style={styles.grandTotal}>Grand Total</Text>
+            <Text style={styles.grandTotal}>₹{total + 33}</Text>
+          </View>
+
+          {/* Place Order Button */}
+          <Button
+            mode="contained"
+            style={styles.orderBtn}
+            onPress={() => setSheetVisible(false)}
+          >
+            Place Order
+          </Button>
+        </Modal>
+      </Portal>
     </SafeAreaView>
   );
 };
@@ -183,10 +263,12 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingBottom : 100
   },
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    
   },
   heroImage: {
     width: '90%',
@@ -362,5 +444,131 @@ const styles = StyleSheet.create({
   snackbar: {
     backgroundColor: '#245c5aff',
     borderRadius: 8,
+  },
+  // 🔽 Bottom Sheet Styles 🔽
+  bottomSheet: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 16,
+    maxHeight: '80%',
+  },
+  sheetHeader: {
+    fontSize: 18,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginBottom: 12,
+    color: '#222',
+  },
+  deliveryRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  deliveryIcon: {
+    fontSize: 18,
+    marginRight: 8,
+  },
+  deliveryText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#2d7d46',
+  },
+  cartItemRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  cartItemText: {
+    fontSize: 16,
+    color: '#333',
+    flex: 1,
+  },
+  cartItemPrice: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#222',
+    marginLeft: 10,
+  },
+  offerBox: {
+    marginTop: 16,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  offerText: {
+    fontSize: 14,
+    color: '#333',
+    marginLeft: 8,
+  },
+  climateBox: {
+    marginTop: 16,
+    padding: 12,
+    backgroundColor: '#f1fdf6',
+    borderRadius: 12,
+  },
+  climateText: {
+    fontSize: 14,
+    color: '#2d7d46',
+    fontWeight: '500',
+  },
+  totalRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#ddd',
+    paddingTop: 12,
+  },
+  totalText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#000',
+  },
+  grandTotal: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#e53935',
+  },
+  orderBtn: {
+    marginTop: 16,
+    borderRadius: 12,
+    paddingVertical: 10,
+    backgroundColor: '#e53935',
+  },
+  cartButtonWrapper: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    right: 20,
+  },
+
+  cartButton: {
+    backgroundColor: '#E53935', // bold red like Zomato
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5, // Android shadow
+  },
+
+  cartButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
   },
 });
