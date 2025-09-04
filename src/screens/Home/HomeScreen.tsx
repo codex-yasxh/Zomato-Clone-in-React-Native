@@ -89,8 +89,8 @@ const styles = StyleSheet.create({
 
   /** Top App Bar */
   appBar: {
-    marginTop: 10,
-    marginBottom: 8,
+    marginTop: 40,
+    marginBottom: 6,
   },
   locationText: {
     fontSize: 14,
