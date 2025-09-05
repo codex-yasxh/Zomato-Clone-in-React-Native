@@ -7,6 +7,7 @@ import {
   Image,
   ScrollView,
   Pressable,
+  TouchableOpacity,
 } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -15,6 +16,8 @@ import ItemComponents from "../../components/ItemComponents";
 import hotels from "../../data/Hotels";
 import HotelComponents from "../../components/HotelComponents";
 import SlidingBanner from "../../components/SlidingBanner";
+import { ImageBackground } from "react-native/types_generated/index";
+import { SCREENS } from "../../routes";
 
 const HomeScreen = () => {
   const data = hotels;
@@ -27,10 +30,39 @@ const HomeScreen = () => {
         showsVerticalScrollIndicator={false}
       >
         {/* App Bar */}
-        <View style={styles.appBar}>
-          <Text style={styles.locationText}>Delivery to</Text>
-          <Text style={styles.cityText}>Your Location 📍</Text>
-        </View>
+<View style={styles.appBar}>
+  <View style={styles.leftAppBar}>
+    <Text style={styles.locationText}>Delivery to</Text>
+    <View style={styles.cityRow}>
+      <Text style={styles.cityText}>Your Location</Text>
+      <Text style={styles.pinEmoji}>📍</Text>
+    </View>
+  </View>
+
+  <View style={styles.rightAppBar}>
+    <Pressable 
+    onPress={()=>navigation.navigate(SCREENS.Profile)}
+    style={styles.iconWrapper}
+    >
+      <Image
+        source={{
+          uri: "https://media.istockphoto.com/id/1196083861/vector/simple-man-head-icon-set.jpg?s=612x612&w=0&k=20&c=a8fwdX6UKUVCOedN_p0pPszu8B4f6sjarDmUGHngvdM=",
+        }}
+        style={styles.icon}
+      
+      />
+    </Pressable>
+    <Pressable style={styles.iconWrapper}>
+      <Image
+        source={{
+          uri: "https://images.unsplash.com/vector-1738925656520-e5ea818b42cc?q=80&w=880&auto=format&fit=crop",
+        }}
+        style={styles.icon}
+      />
+    </Pressable>
+  </View>
+</View>
+
 
         {/* Search Bar */}
         <View style={styles.searchBar}>
@@ -88,19 +120,59 @@ const styles = StyleSheet.create({
   },
 
   /** Top App Bar */
-  appBar: {
-    marginTop: 40,
-    marginBottom: 6,
-  },
-  locationText: {
-    fontSize: 14,
-    color: "#999",
-  },
-  cityText: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#222",
-  },
+ appBar: {
+  marginTop: 24,
+  marginBottom: 6,
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+  paddingHorizontal: 12,
+  paddingVertical: 8,
+  borderRadius: 12,
+},
+
+leftAppBar: {
+  flexDirection: "column",
+},
+
+cityRow: {
+  flexDirection: "row",
+  alignItems: "center",
+  marginTop: 2,
+},
+
+locationText: {
+  fontSize: 13,
+  color: "#888",
+},
+
+cityText: {
+  fontSize: 18,
+  fontWeight: "700",
+  color: "#222",
+},
+
+pinEmoji: {
+  marginLeft: 4,
+  fontSize: 16,
+},
+
+rightAppBar: {
+  flexDirection: "row",
+  alignItems: "center",
+  gap: 10, // modern spacing
+},
+
+iconWrapper: {
+  padding: 8,
+  borderRadius: 50,
+  elevation: 2,
+},
+
+icon: {
+  width: 20,
+  height: 20,
+},
 
   /** Search Bar */
   searchBar: {
