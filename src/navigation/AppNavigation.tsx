@@ -5,16 +5,22 @@ import AddToCartScreen from '../screens/Cart/CartScreen';
 import HotelScreen from '../screens/Hotels/HotelScreen';
 import HomeScreen from '../screens/Home/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import DeliverySummaryScreen from '../screens/DeliverySummaryScreen';
+import OrderTrackingScreen from '../screens/OrderTrackingScreen';
 
 const AppStack = createNativeStackNavigator();
 
 const AppNavigation = () => {
   return (
     <AppStack.Navigator screenOptions={{ headerShown: false }}>
+      
         <AppStack.Screen name={SCREENS.Home} component={HomeScreen}/>
         <AppStack.Screen name={SCREENS.Cart} component={AddToCartScreen}/>
         <AppStack.Screen name={SCREENS.HotelScreen} component={HotelScreen}/>
         <AppStack.Screen name={SCREENS.Profile} component={ProfileScreen} />
+        <AppStack.Screen name={SCREENS.DeliverySummary} component={DeliverySummaryScreen} />
+        <AppStack.Screen name={SCREENS.OrderTracking} component={OrderTrackingScreen} />
+
     </AppStack.Navigator>
   )
 }

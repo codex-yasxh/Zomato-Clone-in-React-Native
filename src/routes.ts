@@ -11,4 +11,6 @@ export const SCREENS = {
     HotelScreen : 'HotelScreen',
     Welcome : 'WelcomeScreen',
     Profile : 'ProfileScreen',
+    DeliverySummary : 'DeliverySummaryScreen',
+    OrderTracking : 'OrderTrackingScreen',
 };
