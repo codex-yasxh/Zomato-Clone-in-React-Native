@@ -32,7 +32,7 @@ const SplashScreen = () => {
           },
         ]}
       >
-        Zomato
+        Tomato 🍅
       </Animated.Text>
 
       <Text style={styles.tagline}>Better food, better life.</Text>
