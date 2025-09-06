@@ -8,19 +8,22 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo ,useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { FlatList } from 'react-native-gesture-handler';
-import { useCart } from '../../context/CartContext';
 import { Snackbar, Button, Modal, Portal } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+import { SCREENS } from '../../routes';
+import { useCart } from '../../context/CartContext';
 
 const HotelScreen = () => {
   const route = useRoute();
   const { hotel } = route.params;
   const screenWidth = Dimensions.get('window').width;
+  const navigation = useNavigation();
 
   // ✅ Use context only
-  const { cartItems, addToCart, removeOneFromCart } = useCart();
+const { cartItems, addToCart, removeOneFromCart, setHotel } = useCart();
 
   // ✅ Derive quantities from cart
   const countMap = useMemo(() => {
@@ -30,6 +33,11 @@ const HotelScreen = () => {
     }
     return map;
   }, [cartItems]);
+
+  React.useEffect(() => {
+  if (hotel) setHotel(hotel);
+}, [hotel]);
+
 
   const getQty = id => countMap[id] || 0;
 
@@ -212,12 +220,18 @@ const HotelScreen = () => {
           </View>
 
           {/* Cart Items */}
-          {cartItems.map((item, index) => (
-            <View key={index} style={styles.cartItemRow}>
-              <Text style={styles.cartItemText}>{item.name}</Text>
-              <Text style={styles.cartItemPrice}>₹{item.price}</Text>
-            </View>
-          ))}
+          {Object.entries(countMap).map(([id, qty]) => {
+            const item = cartItems.find(i => i.id === id);
+            if (!item) return null;
+            return (
+              <View key={id} style={styles.cartItemRow}>
+                <Text style={styles.cartItemText}>
+                  {item.name} x{qty}
+                </Text>
+                <Text style={styles.cartItemPrice}>₹{item.price * qty}</Text>
+              </View>
+            );
+          })}
 
           {/* Offers */}
           <View style={styles.offerBox}>
@@ -247,7 +261,10 @@ const HotelScreen = () => {
           <Button
             mode="contained"
             style={styles.orderBtn}
-            onPress={() => setSheetVisible(false)}
+            onPress={() => {
+              setSheetVisible(false);
+              navigation.navigate(SCREENS.DeliverySummary, {hotel}); // 👈 Navigate to Delivery
+            }}
           >
             Place Order
           </Button>
@@ -263,12 +280,11 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingBottom : 100
+    paddingBottom: 100,
   },
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    
   },
   heroImage: {
     width: '90%',
